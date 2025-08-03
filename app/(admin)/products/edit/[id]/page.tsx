@@ -4,9 +4,9 @@ import { Product } from '@/types';
 import { notFound } from 'next/navigation';
 import { NextPage } from 'next';
 
-// Define the props type to handle async params
+
 interface EditProductPageProps {
-  params: Promise<{ id: string }>; // params is a Promise in dynamic routes
+  params: Promise<{ id: string }>; 
 }
 
 const prisma = new PrismaClient();

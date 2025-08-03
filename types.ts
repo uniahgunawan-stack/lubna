@@ -21,13 +21,6 @@ export interface ReviewImage {
   publicId?: string;
 }
 
-export interface ReviewImage {
-  id: string;
-  url: string;
-  publicId?: string;
-  alt: string;
-}
-
 export interface Review {
   id: string;
   rating: number;
