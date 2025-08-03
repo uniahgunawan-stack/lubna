@@ -16,8 +16,7 @@ export default function AdminProductsPage() {
 
   
   const publishedProducts = products.filter(p => p.isPublished);
-  const unpublishedProducts = products.filter(p => !p.isPublished);
-  const handlelogout = useAdminProducts().handlelogout; 
+  const unpublishedProducts = products.filter(p => !p.isPublished) 
   const handleDelete = async (id: string) => {
     if (confirm('Apakah Anda yakin ingin menghapus produk ini? Ini akan menghapus semua data dan gambar terkait.')) {
       await deleteProduct(id);
