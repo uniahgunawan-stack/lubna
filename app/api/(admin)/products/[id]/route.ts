@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+// Define the type for the context parameter
+interface Context {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(req: NextRequest, { params }: Context) {
+  const { id } = await params; // Await params to resolve the Promise
   try {
     const product = await prisma.product.findUnique({
       where: { id },
@@ -32,8 +37,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(req: NextRequest, { params }: Context) {
+  const { id } = await params; // Await params to resolve the Promise
   try {
     const formData = await req.formData();
     const name = formData.get('name') as string;
@@ -91,13 +96,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         const base64 = buffer.toString('base64');
         const dataURI = `data:${file.type};base64,${base64}`;
 
-        const result = await cloudinary.uploader.upload(dataURI, {
+        const result = await cloudinary.uploader.destroy(dataURI, {
           folder: 'productImage',
           resource_type: 'image',
           timeout: 60000,
-          transformation: [
-            { width: 500, height: 500, crop: 'fill', gravity: 'auto' }
-          ]
+          transformation: [{ width: 500, height: 500, crop: 'fill', gravity: 'auto' }],
         });
 
         return {
@@ -151,8 +154,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, { params }: Context) {
+  const { id } = await params; // Await params to resolve the Promise
   try {
     // 1. Ambil produk beserta gambar produk dan juga SEMUA GAMBAR ULASAN terkait
     const product = await prisma.product.findUnique({
@@ -160,7 +163,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       include: {
         images: true, // Untuk gambar produk
         reviews: {
-          include: { images: true }, // <--- PENTING: Sertakan gambar ulasan di sini
+          include: { images: true }, // PENTING: Sertakan gambar ulasan di sini
         },
       },
     });
@@ -168,7 +171,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     if (!product) {
       return NextResponse.json({ error: 'Produk tidak ditemukan.' }, { status: 404 });
     }
-    
+
     // 2. Hapus semua gambar produk dan ulasan terkait dari Cloudinary
     const productImageDeletePromises = product.images.map(async (img) => {
       if (img.publicId) {
@@ -185,19 +188,21 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     for (const review of product.reviews) {
       for (const img of review.images) {
         if (img.publicId) {
-          reviewImageDeletePromises.push((async () => {
-            try {
-              await cloudinary.uploader.destroy(img.publicId);
-              console.log(`Cloudinary: Review image ${img.publicId} deleted.`);
-            } catch (cloudinaryErr) {
-              console.error(`Cloudinary: Failed to delete review image ${img.publicId}:`, cloudinaryErr);
-            }
-          })());
+          reviewImageDeletePromises.push(
+            (async () => {
+              try {
+                await cloudinary.uploader.destroy(img.publicId);
+                console.log(`Cloudinary: Review image ${img.publicId} deleted.`);
+              } catch (cloudinaryErr) {
+                console.error(`Cloudinary: Failed to delete review image ${img.publicId}:`, cloudinaryErr);
+              }
+            })()
+          );
         }
       }
     }
     await Promise.all([...productImageDeletePromises, ...reviewImageDeletePromises]);
-    
+
     // 3. Hapus produk dan data terkait di Prisma
     await prisma.product.delete({
       where: { id },
