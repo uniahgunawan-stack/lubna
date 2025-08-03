@@ -5,11 +5,6 @@ import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-// Interface ini sudah benar, jadi kita biarkan saja
-interface EditProductPageProps {
-  params: { id: string };
-}
-
 async function getProduct(id: string): Promise<Product | null> {
   try {
     const product = await prisma.product.findUnique({
@@ -61,8 +56,7 @@ async function getProduct(id: string): Promise<Product | null> {
     await prisma.$disconnect();
   }
 }
-
-export default async function EditProduct({ params }: EditProductPageProps) {
+export default async function EditProduct({ params }: { params: { id: string } }) {
   const product = await getProduct(params.id);
 
   if (!product) {
