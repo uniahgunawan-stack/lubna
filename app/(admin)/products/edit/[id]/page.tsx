@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-interface EditProductPageParams {
+// Interface ini sudah benar, jadi kita biarkan saja
+interface EditProductPageProps {
   params: { id: string };
 }
 
@@ -61,9 +62,9 @@ async function getProduct(id: string): Promise<Product | null> {
   }
 }
 
-export default async function EditProduct({ params }: EditProductPageParams) {
-  const awaitedParams = await params;
-  const product = await getProduct(awaitedParams.id);
+export default async function EditProduct({ params }: EditProductPageProps) {
+
+  const product = await getProduct(params.id);
 
   if (!product) {
     notFound();
