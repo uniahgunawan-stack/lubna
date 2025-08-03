@@ -1,12 +1,13 @@
+//hooks\use-product-detail.ts
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getProductById, getProducts, ProductWithDetails } from "@/actions/data";
+import { getProductById, getProducts, ProductTransformed } from "@/actions/data";
 
 
 interface UseProductDetailResult {
-  product: ProductWithDetails | undefined;
-  otherProducts: ProductWithDetails[] | undefined;
+  product: ProductTransformed | undefined;
+  otherProducts: ProductTransformed[] | undefined;
   isLoading: boolean;
   isError: boolean;
   mainImage: string | undefined;
@@ -30,7 +31,7 @@ export const useProductDetail = (): UseProductDetailResult => {
     data: productData,
     isLoading: isProductLoading,
     isError: isProductError,
-  } = useQuery<ProductWithDetails | null, Error>({
+  } = useQuery<ProductTransformed | null, Error>({
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
     enabled: !!id,
@@ -40,7 +41,7 @@ export const useProductDetail = (): UseProductDetailResult => {
     data: otherProductsRawData,
     isLoading: isOtherProductsLoading,
     isError: isOtherProductsError,
-  } = useQuery<ProductWithDetails[] | null, Error>({
+  } = useQuery<ProductTransformed[] | null, Error>({
     queryKey: ["otherProducts", id],
     queryFn: () =>
       getProducts({ limit: 8, orderBy: "createdAt", orderDirection: "desc" }),

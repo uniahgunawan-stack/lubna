@@ -1,4 +1,3 @@
-
 'use client';
 
 import ProductDetailView from '@/components/product/ProductDetail';
