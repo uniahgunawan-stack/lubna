@@ -3,8 +3,10 @@ import EditProductPage from './EditProductPage/page';
 import { Product } from '@/types';
 import { notFound } from 'next/navigation';
 import { NextPage } from 'next';
+
+// Define the props type to handle async params
 interface EditProductPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>; // params is a Promise in dynamic routes
 }
 
 const prisma = new PrismaClient();
@@ -60,8 +62,12 @@ async function getProduct(id: string): Promise<Product | null> {
     await prisma.$disconnect();
   }
 }
+
+// Use NextPage with async params
 const EditProduct: NextPage<EditProductPageProps> = async ({ params }) => {
-  const product = await getProduct(params.id);
+  // Await the params to resolve the Promise
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) {
     notFound();
