@@ -1,0 +1,86 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name String?
+  role      Role     @default(USER)
+  favorites Product[] @relation("UserFavorites")
+  
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Product {
+  id            String       @id @default(cuid())
+  name          String
+  description   String
+  price         Int
+  discountPrice Int?
+  images        ProductImage[]
+  rating        Float           @default(0)
+  reviews       Review[]
+  isPublished   Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  favoritedBy   User[]       @relation("UserFavorites")
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  url       String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String 
+  publicId  String  @unique 
+  order     Int  
+  @@index([productId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Float         @default(0)
+  comment   String
+  images    ReviewImage[]
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+model ReviewImage {
+  id       String  @id @default(cuid())
+  url      String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId String
+  publicId  String  @unique 
+  @@index([reviewId])
+}
+
+model Banner {
+  id          String       @id @default(uuid())
+  description String
+  bannerImages BannerImage[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model BannerImage {
+  id        String   @id @default(uuid())
+  url       String
+  publicId  String   @unique
+  altText   String?
+  bannerId  String
+  banner    Banner   @relation(fields: [bannerId], references: [id], onDelete: Cascade) // <--- PASTIKAN INI ADA
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
