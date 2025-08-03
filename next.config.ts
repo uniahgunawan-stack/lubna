@@ -15,9 +15,6 @@ const nextConfig = {
       },
     ],
   },
-   rules: {
-    '@typescript-eslint/no-explicit-any': 'off',
-  },
 };
 
 module.exports = nextConfig;

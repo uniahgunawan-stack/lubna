@@ -30,7 +30,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             Selamat Datang di Lubna Muslim Fashion
           </DialogTitle>
           <DialogDescription className="text-gray-600 mt-2 text-center">
-            Tekan tombol "Subscribe" untuk menambahkan produk favorit kamu dan nikmati pengalaman belanja yang lebih personal.
+            Tekan tombol Subscribe untuk menambahkan produk favorit kamu dan nikmati pengalaman belanja yang lebih personal.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-4">

@@ -52,6 +52,10 @@ interface Banner {
   description: string;
   bannerImages: BannerImage[];
 }
+interface DeleteBannerResponse {
+  message: string;
+}
+
 const fetchBanners = async (): Promise<Banner[]> => {
   const res = await fetch("/api/banners");
   if (!res.ok) {
@@ -154,7 +158,7 @@ export default function AdminBannersPage() {
     },
   });
 
-  const deleteBannerMutation = useMutation<Banner, Error, string>({
+  const deleteBannerMutation = useMutation<DeleteBannerResponse, Error, string>({
     mutationFn: deleteBanner,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["banners"] });

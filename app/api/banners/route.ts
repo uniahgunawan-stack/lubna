@@ -1,30 +1,36 @@
-// app/api/banners/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import cloudinary from "@/lib/cloudinary"; // Pastikan Anda punya konfigurasi cloudinary
+import cloudinary from "@/lib/cloudinary";
 
-// GET all banners
+
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+  
+}
+
 export async function GET() {
   try {
     const banners = await prisma.banner.findMany({
       include: {
         bannerImages: {
-          orderBy: {}, // Opsional: urutkan gambar
+          orderBy: { createdAt: "desc" },
         },
       },
-      orderBy: { createdAt: "desc" }, // Opsional: urutkan banner terbaru di atas
+      orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(banners);
   } catch (error) {
     console.error("Error fetching banners:", error);
+   
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
     return NextResponse.json(
-      { message: "Gagal mengambil data banner.", error: error.message },
+      { message: "Gagal mengambil data banner.", error: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST a new banner
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -38,32 +44,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Upload image to Cloudinary
     const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Upload to Cloudinary
-    const uploadResult = await new Promise((resolve, reject) => {
+    const uploadResult: CloudinaryUploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           { folder: "bannerimage", resource_type: "image", timeout: 60000 },
           (error, result) => {
-            if (error) {
+            if (error || !result) {
               console.error("Cloudinary upload error:", error);
               return reject(
                 new Error("Gagal mengunggah gambar ke Cloudinary.")
               );
             }
-            resolve(result);
+            resolve(result as CloudinaryUploadResult);
           }
         )
         .end(buffer);
     });
 
-    const imageUrl = (uploadResult as any).secure_url;
-    const publicId = (uploadResult as any).public_id;
+    const imageUrl = uploadResult.secure_url;
+    const publicId = uploadResult.public_id;
 
-    // Create banner in Prisma
     const newBanner = await prisma.banner.create({
       data: {
         description,
@@ -80,8 +83,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(newBanner, { status: 201 });
   } catch (error) {
     console.error("Error creating banner:", error);
+    
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
     return NextResponse.json(
-      { message: "Gagal membuat banner baru.", error: error.message },
+      { message: "Gagal membuat banner baru.", error: errorMessage },
       { status: 500 }
     );
   }

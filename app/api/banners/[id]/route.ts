@@ -23,9 +23,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     let imageUrl: string | undefined;
     let publicId: string | undefined;
 
-    // Jika ada gambar baru, upload dan hapus yang lama
     if (newImageFile) {
-      // Hapus gambar lama dari Cloudinary jika ada
       if (oldPublicId) {
         try {
           await cloudinary.uploader.destroy(oldPublicId);
@@ -43,9 +41,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         cloudinary.uploader.upload_stream(
                { folder: 'bannerimage',resource_type: 'image',
                   timeout:60000,
-                 transformation: [
-                       { width: 500, height: 500, crop: 'fill', gravity: 'auto' }
-                     ]
                 },
           (error, result) => {
             if (error || !result) {

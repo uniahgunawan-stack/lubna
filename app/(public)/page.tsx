@@ -32,11 +32,10 @@ export default async function HomePage() {
           <h1 className="text-2xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
             Temukan Gaya Anda, Belanja Tanpa Batas
           </h1>
-          <p className="text-lg md:text-2xl text-gray-200">
+          <p className="text-lg md:text-2xl text-gray-200 mb-4">
             Koleksi terbaru, kualitas terbaik, harga bersahabat. Hanya di Lubna
             Muslimah Fashion
           </p>
-          <Bouncing />
           <Link href="#koleksi kami" scroll={true}>
             <Button
               size="sm"
