@@ -101,7 +101,8 @@ export async function getProducts(options?: {
           select: { id: true },
         },
         reviews: {
-          select: { id: true, rating: true, comment: true },
+          // PERBAIKAN: Mengubah select agar sesuai dengan ProductWithDetails
+          select: { rating: true, images: true },
         },
       },
       orderBy: {
