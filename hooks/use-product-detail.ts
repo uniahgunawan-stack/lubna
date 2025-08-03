@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getProductById, getProducts, ProductWithDetails } from "@/actions/data";
-import { ProductDetailData } from "@/types";
+
 
 interface UseProductDetailResult {
   product: ProductWithDetails | undefined;
-  otherProducts: ProductDetailData[] | undefined;
+  otherProducts: ProductWithDetails[] | undefined;
   isLoading: boolean;
   isError: boolean;
   mainImage: string | undefined;

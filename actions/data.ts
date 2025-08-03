@@ -13,10 +13,9 @@ export type ProductWithDetails = Prisma.ProductGetPayload<{
   include: {
     images: true;
     reviews: {
-      select: {
-        rating: true;
-        images: true;
-      };
+      include: {
+        images: true;
+      };
     };
     favoritedBy: {
       select: { id: true };
@@ -104,9 +103,8 @@ export async function getProducts(options?: {
           select: { id: true },
         },
         reviews: {
-          // PERBAIKAN: Mengubah select agar sesuai dengan ProductWithDetails
-          select: { rating: true, images: true },
-        },
+          include: { images: true }, // <-- Perbaikan di sini
+        },
       },
       orderBy: {
         [orderBy || 'createdAt']: orderDirection || 'desc',
