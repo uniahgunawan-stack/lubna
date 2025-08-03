@@ -65,10 +65,10 @@ export interface BannerImage{
 
 export interface ProductDetailData {
   id: string;
-  images: ProductImage[]; // Sesuaikan dengan 'images' dari Prisma
+  images: ProductImage[];
   name: string;
   price: number;
-  discountPrice?: number;
+  discountPrice?: number | null;
   rating: number;
   description: string;
   reviews: Review[];

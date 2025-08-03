@@ -9,12 +9,13 @@ export type ReviewImage = Prisma.ReviewImageGetPayload<{}>;
 export type Review = Prisma.ReviewGetPayload<{
   include: { images: true };
 }>;
+
+// PERBAIKAN: Ubah 'select' di 'reviews' menjadi 'include'
 export type ProductWithDetails = Prisma.ProductGetPayload<{
   include: {
     images: true;
     reviews: {
-      select: {
-        rating: true;
+      include: {
         images: true;
       };
     };
@@ -41,8 +42,10 @@ export type BannerWithImagesTransformed = {
   updatedAt: string;
   bannerImages: BannerImageTransformed[];
 };
-export type ProductTransformed = Omit<ProductWithDetails, 'createdAt'> & {
+
+export type ProductTransformed = Omit<ProductWithDetails, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
+  updatedAt: string;
 };
 
 export async function getBanners(): Promise<BannerWithImagesTransformed[]> {
@@ -77,8 +80,6 @@ export async function getBanners(): Promise<BannerWithImagesTransformed[]> {
   }
 }
 
-// ... rest of the file remains unchanged ...
-
 export async function getProducts(options?: {
   limit?: number;
   orderBy?: 'createdAt' | 'price' | 'name' | 'rating';
@@ -98,14 +99,14 @@ export async function getProducts(options?: {
           ],
         }),
       },
+      // PERBAIKAN: Mengubah select menjadi include agar sesuai dengan tipe
       include: {
         images: true,
         favoritedBy: {
           select: { id: true },
         },
         reviews: {
-          // PERBAIKAN: Mengubah select agar sesuai dengan ProductWithDetails
-          select: { rating: true, images: true },
+          include: { images: true },
         },
       },
       orderBy: {
@@ -117,6 +118,7 @@ export async function getProducts(options?: {
     return products.map((product) => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(), // Assuming `updatedAt` also exists
       images: product.images.map((img) => ({
         ...img,
       })),
@@ -154,6 +156,7 @@ export async function getProductById(id: string): Promise<ProductTransformed | n
     return {
       ...product,
       createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(), // Assuming `updatedAt` also exists
       images: product.images.map((img) => ({
         ...img,
       })),
@@ -197,6 +200,7 @@ export async function getFavoriteProducts(userId: string): Promise<ProductTransf
     return userWithFavorites.favorites.map((product) => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(), // Assuming `updatedAt` also exists
       images: product.images.map((img) => ({
         ...img,
       })),
