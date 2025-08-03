@@ -63,7 +63,6 @@ async function getProduct(id: string): Promise<Product | null> {
 }
 
 export default async function EditProduct({ params }: EditProductPageProps) {
-
   const product = await getProduct(params.id);
 
   if (!product) {
