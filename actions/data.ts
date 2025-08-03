@@ -130,7 +130,7 @@ export async function getProducts(options?: {
   }
 }
 
-export async function getProductById(id: string): Promise<ProductWithDetails | null> {
+export async function getProductById(id: string): Promise<ProductTransformed | null> {
   try {
     const product = await prisma.product.findUnique({
       where: { id },
@@ -170,7 +170,7 @@ export async function getProductById(id: string): Promise<ProductWithDetails | n
   }
 }
 
-export async function getFavoriteProducts(userId: string): Promise<ProductWithDetails[]> {
+export async function getFavoriteProducts(userId: string): Promise<ProductTransformed[]> {
   try {
     const userWithFavorites = await prisma.user.findUnique({
       where: { id: userId },
