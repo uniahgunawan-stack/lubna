@@ -3,7 +3,7 @@
 
 import ProductDetailView from '@/components/product/ProductDetail';
 import { useProductDetail } from '@/hooks/use-product-detail';
-import { notFound } from 'next/navigation';
+
 
 export default function ProductDetailPage() {
     const {

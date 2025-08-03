@@ -46,7 +46,7 @@ export async function performLogin(credentials: { email: string; password: strin
   let data: AuthResponse;
   try {
     data = text ? JSON.parse(text) : { message: 'Tidak ada data respons', user: null };
-  } catch (e) {
+  } catch {
     throw new Error('Gagal memproses respons dari server');
   }
 

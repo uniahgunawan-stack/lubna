@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle, Shirt, ShoppingBag } from "lucide-react";
+import { CheckCircle, Shirt } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const banner = [

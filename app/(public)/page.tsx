@@ -1,16 +1,14 @@
 import React from "react";
 import { getBanners, getProducts } from "@/actions/data";
-import Container from "@/components/ui/container"; // Import komponen Container Anda
+import Container from "@/components/ui/container";
 import ProductCard from "@/components/ProductCard";
 import BannerSlider from "@/components/BannerSlider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Reason } from "@/components/Reason";
-import { Footer } from "@/components/ui/footer";
 import IconWhatsapp from "@/components/ui/icon-wa";
 import { Banner } from "@/components/ui/text-banner";
-import { Bouncing } from "@/components/ui/bouncingDown";
 
 export default async function HomePage() {
   const banners = await getBanners();

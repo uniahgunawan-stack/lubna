@@ -14,13 +14,9 @@ interface EditProductPageProps {
 export default function EditProductPage({ product }: EditProductPageProps) {
   const {
     name,
-    setName,
     description,
-    setDescription,
     price,
-    setPrice,
     discountPrice,
-    setDiscountPrice,
     imagePreviews,
     handleAddImageInput,
     handleImageChange,

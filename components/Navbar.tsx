@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { UserCircle, LayoutDashboard, Heart, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,7 +17,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/hooks/use-auth";
 
 const Header: React.FC = () => {
-  const router = useRouter();
   const { user, isLoggedIn, isAdmin, isAuthLoading, logout } = useAuth();
   const isMobile = useIsMobile();
 
