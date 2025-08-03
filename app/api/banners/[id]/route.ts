@@ -6,10 +6,14 @@ import cloudinary from '@/lib/cloudinary';
 interface CloudinaryUploadResult {
   secure_url: string;
   public_id: string;
+} 
+
+interface Context {
+  params: Promise<{ id: string }>;
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(req: NextRequest,  {params}: Context) {
+  const { id } =await params;
   try {
     const formData = await req.formData();
     const description = formData.get('description') as string;
@@ -88,8 +92,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, { params }: Context) {
+  const { id } =await params;
   try {
     const banner = await prisma.banner.findUnique({
       where: { id },
