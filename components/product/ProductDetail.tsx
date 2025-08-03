@@ -9,13 +9,14 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import ProductCard from "@/components/ProductCard";
 import Ulasan from "./ulasan";
-import { Product } from "@/types";
+import { ProductDetailData } from "@/types";
 import { Bouncing } from "../ui/bouncingDown";
 import Link from "next/link";
+import { ProductWithDetails } from "@/actions/data";
 
 interface ProductDetailViewProps {
-  product: Product;
-  otherProducts: Product[];
+  product: ProductDetailData;
+  otherProducts: ProductWithDetails[];
   mainImage: string;
   setMainImage: React.Dispatch<React.SetStateAction<string | undefined>>;
   isStickyHeaderVisible: boolean;
@@ -35,6 +36,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   phoneNumber,
   fallbackImageUrl,
   currentImageSrc,
+  
 }) => {
   const formatPriceDisplay = product.discountPrice
     ? product.discountPrice.toLocaleString("id-ID")
