@@ -1,6 +1,6 @@
 // components\FormUlasan.tsx
 'use client'
-import { useEffect } from 'react';
+import { useEffect, Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -17,6 +17,7 @@ import { PlusCircle, Trash2, Star, Edit } from 'lucide-react';
 interface FormUlasanProps {
   product: { reviews: Review[] };
   newReviewText: string;
+  setNewReviewText: Dispatch<SetStateAction<string>>;
   newReviewRating: number;
   setNewReviewRating: (rating: number) => void;
   newReviewImagePreviews: { id?: string; url: string; file?: File; publicId?: string }[];
