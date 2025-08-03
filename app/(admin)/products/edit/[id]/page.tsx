@@ -2,6 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import EditProductPage from './EditProductPage/page';
 import { Product } from '@/types';
 import { notFound } from 'next/navigation';
+import { NextPage } from 'next';
+interface EditProductPageProps {
+  params: { id: string };
+}
 
 const prisma = new PrismaClient();
 
@@ -56,7 +60,7 @@ async function getProduct(id: string): Promise<Product | null> {
     await prisma.$disconnect();
   }
 }
-export default async function EditProduct({ params }: { params: { id: string } }) {
+const EditProduct: NextPage<EditProductPageProps> = async ({ params }) => {
   const product = await getProduct(params.id);
 
   if (!product) {
@@ -64,4 +68,6 @@ export default async function EditProduct({ params }: { params: { id: string } }
   }
 
   return <EditProductPage product={product} />;
-}
+};
+
+export default EditProduct;
