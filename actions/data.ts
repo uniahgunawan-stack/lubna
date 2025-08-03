@@ -41,6 +41,9 @@ export type BannerWithImagesTransformed = {
   updatedAt: string;
   bannerImages: BannerImageTransformed[];
 };
+export type ProductTransformed = Omit<ProductWithDetails, 'createdAt'> & {
+  createdAt: string;
+};
 
 export async function getBanners(): Promise<BannerWithImagesTransformed[]> {
   try {
@@ -81,7 +84,7 @@ export async function getProducts(options?: {
   orderBy?: 'createdAt' | 'price' | 'name' | 'rating';
   orderDirection?: 'asc' | 'desc';
   search?: string;
-}): Promise<ProductWithDetails[]> {
+}): Promise<ProductTransformed[]> { 
   const { limit, orderBy, orderDirection, search } = options || {};
 
   try {
