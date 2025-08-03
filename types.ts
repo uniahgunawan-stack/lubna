@@ -4,7 +4,7 @@ export interface ProductImage {
   url: string;
   order: number;
   publicId?: string;
-  productId?: string;
+  productId: string;
 }
 
 export interface FormValues {

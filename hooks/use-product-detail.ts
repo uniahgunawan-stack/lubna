@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getProductById, getProducts } from "@/actions/data";
+import { getProductById, getProducts, ProductWithDetails } from "@/actions/data";
 import { ProductDetailData } from "@/types";
 
 interface UseProductDetailResult {
-  product: ProductDetailData | undefined;
+  product: ProductWithDetails | undefined;
   otherProducts: ProductDetailData[] | undefined;
   isLoading: boolean;
   isError: boolean;
@@ -30,7 +30,7 @@ export const useProductDetail = (): UseProductDetailResult => {
     data: productData,
     isLoading: isProductLoading,
     isError: isProductError,
-  } = useQuery<ProductDetailData | null, Error>({
+  } = useQuery<ProductWithDetails | null, Error>({
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
     enabled: !!id,
@@ -40,7 +40,7 @@ export const useProductDetail = (): UseProductDetailResult => {
     data: otherProductsRawData,
     isLoading: isOtherProductsLoading,
     isError: isOtherProductsError,
-  } = useQuery<ProductDetailData[] | null, Error>({
+  } = useQuery<ProductWithDetails[] | null, Error>({
     queryKey: ["otherProducts", id],
     queryFn: () =>
       getProducts({ limit: 8, orderBy: "createdAt", orderDirection: "desc" }),
