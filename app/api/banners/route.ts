@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import cloudinary from "@/lib/cloudinary";
 
-
 interface CloudinaryUploadResult {
   secure_url: string;
   public_id: string;
