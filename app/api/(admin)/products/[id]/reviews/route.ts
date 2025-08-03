@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 
-// Define the type for the context parameter
 interface Context {
   params: Promise<{ id: string }>;
 }

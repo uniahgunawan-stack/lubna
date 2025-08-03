@@ -2,15 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 
-// PERBAIKAN: Definisikan tipe untuk params secara terpisah
-interface RouteParams {
-  params: {
-    id: string;
-  };
+interface Context {
+  params: Promise<{ id: string }>;
 }
-
-export async function GET(req: NextRequest, { params }: RouteParams) { // <-- Ubah di sini
-  const { id } = params;
+export async function GET(req: NextRequest, { params }: Context) { 
+  const { id } =await params;
   try {
     const product = await prisma.product.findUnique({
       where: { id },
@@ -39,8 +35,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) { // <-- Ub
   }
 }
 
-export async function PUT(req: NextRequest, { params }: RouteParams) { // <-- Ubah di sini
-  const { id } = params;
+export async function PUT(req: NextRequest, { params }: Context) { 
+  const { id } =await params;
   try {
     const formData = await req.formData();
     const name = formData.get('name') as string;
@@ -77,7 +73,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) { // <-- Ub
       return NextResponse.json({ error: 'Produk tidak ditemukan.' }, { status: 404 });
     }
 
-    // Hanya hapus gambar jika existingImages[] tidak kosong
+    
     let imagesToDelete = [];
     if (existingImages.length > 0) {
       imagesToDelete = product.images.filter(
@@ -158,16 +154,16 @@ export async function PUT(req: NextRequest, { params }: RouteParams) { // <-- Ub
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: RouteParams) { // <-- Ubah di sini
-  const { id } = params;
+export async function DELETE(req: NextRequest, { params }: Context) {
+  const { id } =await params;
   try {
-    // 1. Ambil produk beserta gambar produk dan juga SEMUA GAMBAR ULASAN terkait
+    
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
-        images: true, // Untuk gambar produk
+        images: true,
         reviews: {
-          include: { images: true }, // <--- PENTING: Sertakan gambar ulasan di sini
+          include: { images: true },
         },
       },
     });
@@ -176,7 +172,6 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) { // <--
       return NextResponse.json({ error: 'Produk tidak ditemukan.' }, { status: 404 });
     }
     
-    // 2. Hapus semua gambar produk dan ulasan terkait dari Cloudinary
     const productImageDeletePromises = product.images.map(async (img) => {
       if (img.publicId) {
         try {
@@ -205,7 +200,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) { // <--
     }
     await Promise.all([...productImageDeletePromises, ...reviewImageDeletePromises]);
     
-    // 3. Hapus produk dan data terkait di Prisma
+    
     await prisma.product.delete({
       where: { id },
     });
