@@ -154,7 +154,7 @@ export default function AdminBannersPage() {
     },
   });
 
-  const deleteBannerMutation = useMutation<any, Error, string>({
+  const deleteBannerMutation = useMutation<Banner, Error, string>({
     mutationFn: deleteBanner,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["banners"] });

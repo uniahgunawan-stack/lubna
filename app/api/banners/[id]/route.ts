@@ -3,6 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+}
+
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   try {
@@ -34,7 +39,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       const arrayBuffer = await newImageFile.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      const uploadResult = await new Promise((resolve, reject) => {
+      const uploadResult: CloudinaryUploadResult = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
                { folder: 'bannerimage',resource_type: 'image',
                   timeout:60000,
@@ -43,17 +48,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
                      ]
                 },
           (error, result) => {
-            if (error) {
+            if (error || !result) {
               console.error('Cloudinary upload error:', error);
               return reject(new Error('Gagal mengunggah gambar baru ke Cloudinary.'));
-            }
-            resolve(result);
+            } resolve({
+              secure_url: result.secure_url,
+              public_id: result.public_id,
+            });
           }
         ).end(buffer);
       });
 
-      imageUrl = (uploadResult as any).secure_url;
-      publicId = (uploadResult as any).public_id;
+        imageUrl = uploadResult.secure_url;
+        publicId = uploadResult.public_id;
     }
 
     // Update banner di Prisma
@@ -81,7 +88,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json(updatedBanner);
   } catch (error) {
     console.error('Error updating banner:', error);
-    return NextResponse.json({ message: 'Gagal memperbarui banner.', error: error.message }, { status: 500 });
+    const errorMessage = typeof error === 'object' && error !== null && 'message' in error ? (error as { message?: string }).message : String(error);
+    return NextResponse.json({ message: 'Gagal memperbarui banner.', error: errorMessage }, { status: 500 });
   }
 }
 
@@ -117,6 +125,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ message: 'Banner berhasil dihapus.' }, { status: 200 });
   } catch (error) {
     console.error('Error deleting banner:', error);
-    return NextResponse.json({ message: 'Gagal menghapus banner.', error: error.message }, { status: 500 });
+   const errorMessage = typeof error === 'object' && error !== null && 'message' in error ? (error as { message?: string }).message : String(error);
+    return NextResponse.json({ message: 'Gagal hapus banner.', error: errorMessage }, { status: 500 });
   }
 }

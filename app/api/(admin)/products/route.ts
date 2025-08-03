@@ -5,7 +5,10 @@ import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 import { productSchema } from '@/schema/productSchema';
 
-
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+}
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -51,7 +54,7 @@ export async function POST(req: NextRequest) {
       const buffer = Buffer.from(arrayBuffer);
 
       // Upload ke Cloudinary
-      const uploadResult = await new Promise<any>((resolve, reject) => {
+      const uploadResult: CloudinaryUploadResult = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream({
           folder: 'productImage',
           resource_type: 'image',
@@ -60,11 +63,13 @@ export async function POST(req: NextRequest) {
                 { width: 500, height: 500, crop: 'fill', gravity: 'auto' }
               ]
         }, (error, result) => {
-          if (error) {
+          if (error || !result) {
             console.error('Cloudinary upload error:', error);
             return reject(error);
-          }
-          resolve(result);
+          }resolve({
+            secure_url: result.secure_url,
+            public_id: result.public_id,
+          });
         }).end(buffer);
       });
 
@@ -113,7 +118,7 @@ export async function POST(req: NextRequest) {
 }
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const products = await prisma.product.findMany({
       orderBy: {
