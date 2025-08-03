@@ -2,6 +2,8 @@
 
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+
+// Define custom types for transformed output
 export type ProductImage = Prisma.ProductImageGetPayload<{}>;
 export type ReviewImage = Prisma.ReviewImageGetPayload<{}>;
 export type Review = Prisma.ReviewGetPayload<{
@@ -22,39 +24,57 @@ export type ProductWithDetails = Prisma.ProductGetPayload<{
   };
 }>;
 
-export type BannerImage = Prisma.BannerImageGetPayload<{}>;
-export type BannerWithImages = Prisma.BannerGetPayload<{
-  include: { bannerImages: true };
-}>;
+// Custom type for transformed Banner output
+export type BannerImageTransformed = {
+  id: string;
+  url: string;
+  publicId: string;
+  altText: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
-export async function getBanners(): Promise<BannerWithImages[]> {
+export type BannerWithImagesTransformed = {
+  id: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  bannerImages: BannerImageTransformed[];
+};
+
+export async function getBanners(): Promise<BannerWithImagesTransformed[]> {
   try {
     const banners = await prisma.banner.findMany({
       include: {
         bannerImages: {
-          select: { id: true, url: true, publicId: true, altText: true, createdAt: true, updatedAt: true }
-        }
+          select: { id: true, url: true, publicId: true, altText: true, createdAt: true, updatedAt: true },
+        },
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    return banners.map(banner => ({
+    return banners.map((banner) => ({
       ...banner,
       createdAt: banner.createdAt.toISOString(),
       updatedAt: banner.updatedAt.toISOString(),
-      bannerImages: banner.bannerImages.map(img => ({
-          ...img,
-          createdAt: img.createdAt.toISOString(),
-          updatedAt: img.updatedAt.toISOString(),
-      }))
+      bannerImages: banner.bannerImages.map((img) => ({
+        id: img.id,
+        url: img.url,
+        publicId: img.publicId,
+        altText: img.altText,
+        createdAt: img.createdAt.toISOString(),
+        updatedAt: img.updatedAt.toISOString(),
+      })),
     }));
   } catch (error) {
     console.error('Error fetching banners:', error);
     throw new Error('Gagal mengambil data banner.');
   }
 }
+
+// ... rest of the file remains unchanged ...
 
 export async function getProducts(options?: {
   limit?: number;
@@ -78,11 +98,11 @@ export async function getProducts(options?: {
       include: {
         images: true,
         favoritedBy: {
-            select: { id: true }
+          select: { id: true },
         },
         reviews: {
-            select: { id: true, rating: true, comment: true }
-        }
+          select: { id: true, rating: true, comment: true },
+        },
       },
       orderBy: {
         [orderBy || 'createdAt']: orderDirection || 'desc',
@@ -90,13 +110,13 @@ export async function getProducts(options?: {
       take: limit,
     });
 
-    return products.map(product => ({
+    return products.map((product) => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
-      images: product.images.map(img => ({
+      images: product.images.map((img) => ({
         ...img,
       })),
-      reviews: product.reviews.map(review => ({
+      reviews: product.reviews.map((review) => ({
         ...review,
       })),
     }));
@@ -105,6 +125,7 @@ export async function getProducts(options?: {
     throw new Error('Gagal mengambil data produk.');
   }
 }
+
 export async function getProductById(id: string): Promise<ProductWithDetails | null> {
   try {
     const product = await prisma.product.findUnique({
@@ -112,7 +133,7 @@ export async function getProductById(id: string): Promise<ProductWithDetails | n
       include: {
         images: true,
         favoritedBy: {
-            select: { id: true }
+          select: { id: true },
         },
         reviews: {
           include: {
@@ -129,21 +150,22 @@ export async function getProductById(id: string): Promise<ProductWithDetails | n
     return {
       ...product,
       createdAt: product.createdAt.toISOString(),
-      images: product.images.map(img => ({
+      images: product.images.map((img) => ({
         ...img,
       })),
-      reviews: product.reviews.map(review => ({
+      reviews: product.reviews.map((review) => ({
         ...review,
-        images: review.images.map(revImg => ({
-            ...revImg,
-        }))
-      }))
+        images: review.images.map((revImg) => ({
+          ...revImg,
+        })),
+      })),
     };
   } catch (error) {
     console.error(`Error fetching product with ID ${id}:`, error);
     throw new Error('Gagal mengambil detail produk.');
   }
 }
+
 export async function getFavoriteProducts(userId: string): Promise<ProductWithDetails[]> {
   try {
     const userWithFavorites = await prisma.user.findUnique({
@@ -168,18 +190,18 @@ export async function getFavoriteProducts(userId: string): Promise<ProductWithDe
     if (!userWithFavorites) {
       return [];
     }
-    return userWithFavorites.favorites.map(product => ({
+    return userWithFavorites.favorites.map((product) => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
-      images: product.images.map(img => ({
+      images: product.images.map((img) => ({
         ...img,
       })),
-      reviews: product.reviews.map(review => ({
+      reviews: product.reviews.map((review) => ({
         ...review,
-        images: review.images.map(revImg => ({
-            ...revImg,
-        }))
-      }))
+        images: review.images.map((revImg) => ({
+          ...revImg,
+        })),
+      })),
     }));
   } catch (error) {
     console.error('Error fetching favorite products:', error);
