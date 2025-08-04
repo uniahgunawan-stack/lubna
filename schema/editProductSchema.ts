@@ -24,18 +24,17 @@ const reviewImageSchema = z.object({
 export const productEditSchema = z.object({
   name: z.string().min(1, 'Nama produk wajib diisi'),
   description: z.string().min(1, 'Deskripsi wajib diisi'),
-  price: z.coerce
-    .number()
-    .refine((val) => !isNaN(val), { message: 'Harga harus berupa angka' })
+  price: z.string()
+    .min(1, 'Harga harus diisi')
+    .refine((val) => !isNaN(Number(val)), { message: 'Harga harus berupa angka' })
+    .transform(Number)
     .refine((val) => val >= 1, { message: 'Harga harus lebih besar dari 0' })
     .refine((val) => Number.isInteger(val), { message: 'Harga harus bilangan bulat' }),
-  discountPrice: z.coerce
-    .number()
-    .refine((val) => !isNaN(val), { message: 'Harga diskon harus berupa angka' })
-    .refine((val) => val >= 0, { message: 'Harga diskon tidak boleh negatif' })
-    .refine((val) => Number.isInteger(val), { message: 'Harga diskon harus bilangan bulat' })
+  discountPrice: z.string()
     .optional()
-    .nullable(),
+    .nullable()
+    .transform(val => (val ? Number(val) : null))
+    .refine((val) => val === null || (!isNaN(val) && val >= 0), { message: 'Harga diskon harus berupa angka non-negatif' }),
   images: z.array(z.union([fileSchema, productImageSchema])).optional(),
 });
 

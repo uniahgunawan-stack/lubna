@@ -10,7 +10,7 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { PlusCircle, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-
+import {z} from 'zod';
 
 interface FormEditProdukProps {
   name: string;
@@ -37,7 +37,7 @@ export default function FormEditProduk({
   handleProductUpdate,
   isSubmitting,
 }: FormEditProdukProps) {
-  const { register, handleSubmit,  formState: { errors } } = useForm<ProductEditSchema>({
+  const { register, handleSubmit,  formState: { errors } } = useForm<z.infer<typeof productEditSchema>>({
     resolver: zodResolver(productEditSchema),
     defaultValues: {
       name,
