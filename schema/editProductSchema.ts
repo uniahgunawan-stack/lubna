@@ -20,24 +20,25 @@ const reviewImageSchema = z.object({
   reviewId: z.string().optional(),
 });
 
-// Schema untuk edit produk
 export const productEditSchema = z.object({
   name: z.string().min(1, 'Nama produk wajib diisi'),
   description: z.string().min(1, 'Deskripsi wajib diisi'),
-  price: z.string()
-    .min(1, 'Harga harus diisi')
-    .refine((val) => !isNaN(Number(val)), { message: 'Harga harus berupa angka' })
-    .transform(Number)
-    .refine((val) => val >= 1, { message: 'Harga harus lebih besar dari 0' })
-    .refine((val) => Number.isInteger(val), { message: 'Harga harus bilangan bulat' }),
-  discountPrice: z.string()
-    .optional()
-    .nullable()
-    .transform(val => (val ? Number(val) : null))
-    .refine((val) => val === null || (!isNaN(val) && val >= 0), { message: 'Harga diskon harus berupa angka non-negatif' }),
+  // PERBAIKAN: Gunakan z.number() secara langsung
+  price: z.number({
+    error: 'Harga harus berupa angka'
+  })
+  .min(1, 'Harga harus lebih besar dari 0')
+  .int('Harga harus bilangan bulat'),
+  // PERBAIKAN: Gunakan z.number() secara langsung
+  discountPrice: z.number({
+    error: 'Harga diskon harus berupa angka'
+  })
+  .min(0, 'Harga diskon tidak boleh negatif')
+  .int('Harga diskon harus bilangan bulat')
+  .optional()
+  .nullable(),
   images: z.array(z.union([fileSchema, productImageSchema])).optional(),
 });
-
 // Schema untuk ulasan (tambah/edit)
 export const reviewSchema = z.object({
   comment: z.string().min(2, 'Komentar harus minimal 2 karakter'),
