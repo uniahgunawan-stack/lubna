@@ -208,7 +208,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex items-center justify-between h-16 md:h-28 px-2">
         <Button
          variant="ghost" 
-          onClick={handleBackToHome}className="flex items-center space-x-2">
+          onClick={handleBackToHome} className="flex items-center">
           <Image
             src="/lubna-512x512.png"
             alt="logo"
