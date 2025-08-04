@@ -20,13 +20,13 @@ const banner = [
 export function Banner() {
     return (
     <section>
-      <div className="container px-2 md:px-4 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="container px-2 sm:px-4 lg:px-8 mx-auto">
+        <div className="grid grid-cols-1 md:gap-x-6 lg:gap-x-8 md:grid-cols-2">
           {banner.map((banner, index) => (
             <div
               key={index}
               // Tambahkan kelas Tailwind 'border-none' di sini
-              className="flex flex-col px-2 items-center justify-center text-center  border-none"
+              className="flex flex-col px-2 mb-4 md:mb-4 text-center  border-none"
             >
               <CardContent className="p-0 flex flex-col items-center">
                 <banner.icon className="h-8 w-8 md:h-10 md:w-10 mb-2 text-green-500" />

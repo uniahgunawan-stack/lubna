@@ -23,13 +23,13 @@ const IconWhatsapp: React.FC<IconWhatsappProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "fixed bottom-10 right-4 md:right-1/5 z-50 p-4 md:p-6 rounded-full shadow-lg transition-colors duration-300",
+        "fixed bottom-10 right-4 lg:right-24 xl:right-1/12 z-50 p-2 md:p-4 rounded-full shadow-lg transition-colors duration-300",
         "bg-green-500 text-white hover:bg-green-600",
         className
       )}
       aria-label="Hubungi kami via WhatsApp"
     >
-      <FaWhatsapp className="h-8 w-8 md:w-16 md:h-16" />
+      <FaWhatsapp className="h-8 w-8 md:w-10 md:h-10" />
     </a>
   );
 };

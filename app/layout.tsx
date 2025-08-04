@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import PurchaseNotification from "@/components/PurchaseNotification";
 import Header from "@/components/Navbar";
 import ModalProvider from "@/providers/modal-provider";
-import { Footer } from "@/components/ui/footer";
 
 export const metadata: Metadata = {
   title: "lubna fashion",
@@ -40,7 +39,6 @@ export default function RootLayout({
             <PurchaseNotification />
             <Header />
             {children}
-            <Footer />
           </TooltipProvider>
         </ReactQueryProvider>
       </body>

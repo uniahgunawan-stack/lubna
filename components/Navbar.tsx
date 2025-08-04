@@ -48,16 +48,16 @@ const Header: React.FC = () => {
       ) : isLoggedIn ? (
         <>
           <div className="flex items-center gap-2">
-            <Avatar className="h-16 w-16">
-              <AvatarFallback className="bg-gradient-to-br text-3xl font-bold from-black to-green-500 text-white">
+            <Avatar className="h-10 w-10">
+              <AvatarFallback className="bg-gradient-to-br text-xl font-bold from-black to-green-500 text-white">
                 {avatarFallbackText}
               </AvatarFallback>
             </Avatar>
             <div className="hidden lg:block">
-              <p className="text-xl font-medium leading-none text-gray-900 dark:text-gray-100">
+              <p className="text-lg font-medium leading-none text-gray-900 dark:text-gray-100">
                 {user?.name || "Pengguna"}
               </p>
-              <p className="text-lg leading-none text-muted-foreground">
+              <p className="text-sm leading-none text-muted-foreground">
                 {user?.email}
               </p>
             </div>
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
               <Button
                 variant="ghost"
                 size="lg"
-                className="flex items-center text-lg cursor-pointer gap-1"
+                className="flex items-center text-sm cursor-pointer gap-1"
               >
                 <LayoutDashboard className="h-8 w-8" /> Dashboard Admin
               </Button>
@@ -86,9 +86,9 @@ const Header: React.FC = () => {
             </Link>
           )}
           <Button
-            size="lg"
+            size="sm"
             variant="outline"
-            className="flex items-center text-lg gap-1 border-red-500 cursor-pointer hover:bg-gradient-to-tr from-red-500 to-red-700 hover:text text-red-500 hover:text-white"
+            className="flex items-center text-sm gap-1 border-red-500 cursor-pointer hover:bg-gradient-to-tr from-red-500 to-red-700 hover:text text-red-500 hover:text-white"
             onClick={handleLogout}
           >
             <LogOut className="h-8 w-8" /> Logout
@@ -205,15 +205,17 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-950/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto flex items-center justify-between h-16 md:h-28 px-2">
+      <div className="container mx-auto flex items-center bg-white justify-between h-16 md:h-28 px-2">
         <Button
          variant="ghost" 
-          onClick={handleBackToHome} className="flex items-center">
+         size={"sm"}
+          onClick={handleBackToHome} className="flex hover:bg-transparent focus:bg-transparent items-center">
           <Image
             src="/lubna-512x512.png"
             alt="logo"
-            width={30}
-            height={30}
+            width={40}
+            height={40}
+            priority={true}
             className="w-10 h-10 md:h-20 md:w-20 object-contain"
           />
           <span className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 hidden sm:block">

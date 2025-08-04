@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { Reason } from "@/components/Reason";
 import IconWhatsapp from "@/components/ui/icon-wa";
 import { Banner } from "@/components/ui/text-banner";
+import { Footer } from "@/components/ui/footer";
 
 export default async function HomePage() {
   const banners = await getBanners();
@@ -84,6 +85,7 @@ export default async function HomePage() {
       <div className="border-t-2 shadow-md">
         <Reason />
       </div>
+      <Footer/>
     </Container>
   );
 }

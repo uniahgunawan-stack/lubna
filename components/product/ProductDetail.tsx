@@ -14,6 +14,7 @@ import { ProductTransformed} from "@/actions/data";
 import { useBackToHome } from "@/hooks/useBackHome";
 import { Button } from "../ui/button";
 import ProductListSection from "../ProductList";
+import { Footer } from "../ui/footer";
 
 interface ProductDetailViewProps {
   product: ProductDetailData;
@@ -46,7 +47,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
     const handleBackToHome = useBackToHome();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 pb-20">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 pb-12 md:pb-0">
       <div
         className={cn(
           "fixed top-0 left-0 right-0 bg-white dark:bg-gray-950 shadow-md z-10000 transition-transform duration-300 ease-in-out lg:hidden",
@@ -139,10 +140,10 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   )}
                 />
               ))}
-              <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">
+              <span className="ml-1 text-sm text-gray-600 dark:text-gray-400">
                 ({product.rating.toFixed(1)} Bintang)
               </span>
-              <span className="ml-2 text-gray-500 dark:text-gray-400">
+              <span className="ml-1 text-gray-500 text-sm dark:text-gray-400">
                 ({product.reviews.length} Ulasan)
               </span>
             </div>
@@ -222,14 +223,15 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
         </Button>
       </div>
 
-      <div className="fixed bottom-8 left-0 right-0 bg-white dark:bg-gray-950 shadow-lg lg:hidden z-50">
+      <div className="fixed bottom-2 px-2 left-0 right-0 bg-transparent dark:bg-gray-950 shadow-lg lg:hidden z-1000">
         <WhatsAppButton
           phoneNumber={phoneNumber}
           message={whatsappMessage}
           className="w-full py-3 text-lg"
         />
-      </div>
-    </div>
+      </div> 
+      <Footer/>     
+    </div> 
   );
 };
 
