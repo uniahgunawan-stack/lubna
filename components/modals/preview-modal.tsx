@@ -6,18 +6,17 @@ import { X, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import usePreviewModal from '@/hooks/use-preview-modal';
-import { toast } from 'sonner';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import useFavorite from '@/hooks/use-favorits';
-import { ProductWithDetails } from '@/actions/data';
+import { ProductTransformed } from '@/actions/data';
 
 const PreviewModal: React.FC = () => {
   const previewModal = usePreviewModal();
-  const product: ProductWithDetails | undefined = previewModal.data as ProductWithDetails | undefined;
+  const product: ProductTransformed | undefined = previewModal.data as ProductTransformed | undefined;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
   const { isFavorited, isLoading, toggleFavoriteStatus } = useFavorite(
-    product ? { product } : { product: {} as ProductWithDetails }
+    product ? { product } : { product: {} as ProductTransformed }
   );
 
   if (!product) {
