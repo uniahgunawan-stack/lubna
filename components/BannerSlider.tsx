@@ -7,10 +7,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 
-import { BannerWithImages } from "@/actions/data";
+import {  BannerWithImagesTransformed } from "@/actions/data";
 
 interface BannerSliderProps {
-  banners: BannerWithImages[];
+  banners: BannerWithImagesTransformed[];
 }
 
 const BannerSlider: React.FC<BannerSliderProps> = ({ banners }) => {
