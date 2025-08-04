@@ -17,7 +17,7 @@ import { ProductTransformed} from "@/actions/data";
 interface ProductDetailViewProps {
   product: ProductDetailData;
   otherProducts: ProductTransformed[];
-  mainImage: string;
+  mainImage: string | undefined;
   setMainImage: React.Dispatch<React.SetStateAction<string | undefined>>;
   isStickyHeaderVisible: boolean;
   whatsappMessage: string;
