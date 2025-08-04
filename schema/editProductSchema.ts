@@ -23,13 +23,11 @@ const reviewImageSchema = z.object({
 export const productEditSchema = z.object({
   name: z.string().min(1, 'Nama produk wajib diisi'),
   description: z.string().min(1, 'Deskripsi wajib diisi'),
-  // PERBAIKAN: Gunakan z.number() secara langsung
   price: z.number({
     error: 'Harga harus berupa angka'
   })
   .min(1, 'Harga harus lebih besar dari 0')
   .int('Harga harus bilangan bulat'),
-  // PERBAIKAN: Gunakan z.number() secara langsung
   discountPrice: z.number({
     error: 'Harga diskon harus berupa angka'
   })
