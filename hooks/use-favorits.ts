@@ -4,10 +4,10 @@ import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import { toggleFavorite } from '@/actions/favorits';
 import { useAuth } from '@/hooks/use-auth';
-import { ProductWithDetails } from '@/actions/data';
+import { ProductTransformed} from '@/actions/data';
 
 interface UseFavoriteProps {
-  product: ProductWithDetails;
+  product: ProductTransformed;
 }
 
 const useFavorite = ({ product }: UseFavoriteProps) => {

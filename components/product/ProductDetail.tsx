@@ -12,11 +12,11 @@ import Ulasan from "./ulasan";
 import { ProductDetailData } from "@/types";
 import { Bouncing } from "../ui/bouncingDown";
 import Link from "next/link";
-import { ProductWithDetails } from "@/actions/data";
+import { ProductTransformed} from "@/actions/data";
 
 interface ProductDetailViewProps {
   product: ProductDetailData;
-  otherProducts: ProductWithDetails[];
+  otherProducts: ProductTransformed[];
   mainImage: string;
   setMainImage: React.Dispatch<React.SetStateAction<string | undefined>>;
   isStickyHeaderVisible: boolean;

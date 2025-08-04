@@ -8,11 +8,11 @@ import { Button } from '@/components/ui/button';
 import {cn} from '@/lib/utils'
 import usePreviewModal from '@/hooks/use-preview-modal';
 import useFavorite from '@/hooks/use-favorits';
-import { ProductWithDetails } from '@/actions/data';
+import { ProductTransformed } from '@/actions/data';
 import LoginToFavoriteModal from '@/components/modals/modal-favorits';
 
 interface ProductCardProps {
-  product: ProductWithDetails;
+  product: ProductTransformed;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
