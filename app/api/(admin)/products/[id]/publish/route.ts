@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-
-// Define the type for the context parameter
 interface Context {
   params: Promise<{ id: string }>;
 }
 
 export async function PATCH(req: NextRequest, { params }: Context) {
-  const { id } = await params; // Await params to resolve the Promise
+  const { id } = await params;
   const { isPublished }: { isPublished: boolean } = await req.json();
 
   if (!id || typeof isPublished !== 'boolean') {
