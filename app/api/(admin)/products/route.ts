@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 import { productSchema } from '@/schema/productSchema';
+import { revalidatePath } from 'next/cache';
 
 interface CloudinaryUploadResult {
   secure_url: string;
@@ -103,7 +104,7 @@ export async function POST(req: NextRequest) {
       ...newProduct,
       createdAt: newProduct.createdAt.toISOString(),
       discountPrice: newProduct.discountPrice ?? null,
-    };
+    }; revalidatePath('/');
 
     return NextResponse.json(sanitizedProduct, { status: 201 });
 
