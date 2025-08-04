@@ -13,6 +13,8 @@ import { ProductDetailData } from "@/types";
 import { Bouncing } from "../ui/bouncingDown";
 import Link from "next/link";
 import { ProductTransformed} from "@/actions/data";
+import { useBackToHome } from "@/hooks/useBackHome";
+import { Button } from "../ui/button";
 
 interface ProductDetailViewProps {
   product: ProductDetailData;
@@ -41,6 +43,8 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const formatPriceDisplay = product.discountPrice
     ? product.discountPrice.toLocaleString("id-ID")
     : product.price.toLocaleString("id-ID");
+
+    const handleBackToHome = useBackToHome();
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 pb-20">
@@ -225,13 +229,14 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
         </section>
       </div>
       <div className="border-t-1 py-2 container px-4 flex mx-auto text-lg  font-bold">
-        <Link
-          href="/"
+        <Button
+        variant={"ghost"}
+          onClick={handleBackToHome}
           className="flex items-center gap-2 hover:text-blue-500 md:text-2xl"
         >
           <Store className="text-green-500 h-8 w-8" />
           <ArrowLeft className="h-4 w-4 ml-2" /> kembali
-        </Link>
+        </Button>
       </div>
 
       <div className="fixed bottom-8 left-0 right-0 bg-white dark:bg-gray-950 shadow-lg lg:hidden z-50">

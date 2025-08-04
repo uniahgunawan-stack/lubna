@@ -8,12 +8,13 @@ import { PlusCircle, ImageIcon } from 'lucide-react';
 import { useAdminProducts } from '@/hooks/useAdminProducts';
 import { AdminProductCard } from '@/components/AdminProductCard';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useBackToHome } from '@/hooks/useBackHome';
  
 
 export default function AdminProductsPage() {
   const { products, loading: isLoading, error, deleteProduct, togglePublish, fetchProducts } = useAdminProducts();
   const isMobile = useMediaQuery('(max-width: 768px)'); 
-
+  const handleBackToHome = useBackToHome();
   
   const publishedProducts = products.filter(p => p.isPublished);
   const unpublishedProducts = products.filter(p => !p.isPublished);
@@ -53,15 +54,14 @@ export default function AdminProductsPage() {
         </div>
       </div>
 
-      <div className="mb-6">
-        <Link href="/">
+      <div className="mb-6">        
           <Button
             variant="ghost"
+            onClick={handleBackToHome}
             className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950"
           >
             ← Kembali ke Beranda
-          </Button>
-        </Link>
+          </Button>        
       </div>
 
       {/* Bagian Produk Yang Dipublikasikan */}

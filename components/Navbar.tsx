@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/hooks/use-auth";
+import { useBackToHome } from "@/hooks/useBackHome";
 
 const Header: React.FC = () => {
   const { user, isLoggedIn, isAdmin, isAuthLoading, logout } = useAuth();
   const isMobile = useIsMobile();
+  const handleBackToHome = useBackToHome();
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -204,10 +206,12 @@ const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-950/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto flex items-center justify-between h-16 md:h-28 px-2">
-        <Link href="/" className="flex items-center space-x-2">
+        <Button
+         variant="ghost" 
+          onClick={handleBackToHome}className="flex items-center space-x-2">
           <Image
             src="/lubna-512x512.png"
-            alt="logo_toko_kamu"
+            alt="logo"
             width={30}
             height={30}
             className="w-10 h-10 md:h-20 md:w-20 object-contain"
@@ -215,7 +219,7 @@ const Header: React.FC = () => {
           <span className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 hidden sm:block">
             Lubna Fashion
           </span>
-        </Link>
+        </Button>
 
         {isMobile ? renderMobileMenu() : renderDesktopMenu()}
       </div>
