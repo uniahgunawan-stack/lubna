@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getFavoriteProducts } from "@/actions/data";
 import { auth } from "@/lib/server-auth";
 import ProductCard from "@/components/ProductCard";
-import { ProductWithDetails } from "@/actions/data";
+import { ProductTransformed } from "@/actions/data";
 import { Frown } from "lucide-react";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ const FavoritesPage = async () => {
     redirect("/login");
   }
 
-  let favoriteProducts: ProductWithDetails[] = [];
+  let favoriteProducts: ProductTransformed[] = [];
   let error: string | null = null;
 
   try {
