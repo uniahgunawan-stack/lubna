@@ -44,7 +44,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
-      <div className="py-4">
+      <div className="mb-4">
         <section className="mb-4">
           <h1 className="font-['var(--font-vivaldi)'] text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center"></h1>
           <Banner />

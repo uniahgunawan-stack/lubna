@@ -7,14 +7,13 @@ import { Star, MessageCircle, Store, ArrowLeft } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import ProductCard from "@/components/ProductCard";
 import Ulasan from "./ulasan";
 import { ProductDetailData } from "@/types";
 import { Bouncing } from "../ui/bouncingDown";
-import Link from "next/link";
 import { ProductTransformed} from "@/actions/data";
 import { useBackToHome } from "@/hooks/useBackHome";
 import { Button } from "../ui/button";
+import ProductListSection from "../ProductList";
 
 interface ProductDetailViewProps {
   product: ProductDetailData;
@@ -72,15 +71,15 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
       {/* buatkan deskripsi disini */}
       <div className=" md:hidden container mb-8 p-2 mx-auto items-center text-center rounded-b-lg shadow-2xl bg-gradient-to-r from-gray-900 to-green-900 text-white">
-        <h2 className="text-xl font-bold mb-4 line-clamp-1 font-['var(--font-vivaldi)']">
+        <h2 className="text-2xl font-bold mb-4 line-clamp-1 font-['var(--font-vivaldi)']">
           💕 {product.name} 💕
         </h2>
-        <p className="text-white px-2 mb-2 font-semibold text-sm text-start mt-4 line-clamp whitespace-pre-wrap">
+        <p className="text-white px-3 text-center mb-2 font-semibold text-lg  mt-4 line-clamp whitespace-pre-wrap">
           {product.description}
         </p>
       </div>
-      <div className="md:hidden container items-center justify-center mx-auto border-t-4"></div>
-      <div className="container mx-auto p-4 pt-8 lg:pt-12">
+      <div className="md:hidden container items-center justify-center mx-auto"></div>
+      <div className="container mx-auto p-4 pt-2 lg:pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-0">
           {/* Product Images Section */}
           <div className="flex flex-col items-center">
@@ -91,7 +90,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 alt={product.name}
                 width={400}
                 height={400}
-                priority
+                priority={true}
                 className="w-full h-auto object-cover rounded-lg shadow-lg"
               />
             </div>
@@ -125,10 +124,10 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
           {/* Product Details */}
           <div>
-            <h1 className="text-4xl font-bold mb-2 font-['var(--font-vivaldi)'] line-clamp-2">
+            <h1 className="text-4xl font-bold mb-2 text-center md:text-start font-['var(--font-vivaldi)'] line-clamp-1">
               {product.name}
             </h1>
-            <div className="flex items-center mb-4">
+            <div className="flex px-14 md:px-0 items-center mb-4">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
@@ -143,7 +142,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">
                 ({product.rating.toFixed(1)} Bintang)
               </span>
-              <span className="ml-4 text-gray-500 dark:text-gray-400">
+              <span className="ml-2 text-gray-500 dark:text-gray-400">
                 ({product.reviews.length} Ulasan)
               </span>
             </div>
@@ -162,10 +161,10 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 Rp {formatPriceDisplay}
               </p>
             </div>
-            <div className="hidden lg:flex text-green-700 font-semibold text-2xl mb-2 border-t-2">
+            <div className=" text-green-700 font-semibold text-2xl mb-2 border-t-2">
               Deskripsi :
             </div>
-            <div className="hidden lg:flex text-sm px-2 mt-4 text-gray-700 dark:text-gray-300 leading-relaxed mb-6 whitespace-pre-wrap">
+            <div className=" text-sm md:text-xl px-2 mt-4 text-gray-700 dark:text-gray-300 leading-relaxed mb-6 whitespace-pre-wrap">
               {product.description}
             </div>
 
@@ -177,9 +176,9 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           </div>
         </div>
 
-        <Separator className="my-4 bg-gray-200 dark:bg-gray-700" />
+        <Separator className="my-1 bg-gray-200 dark:bg-gray-700" />
 
-        <section className="container mx-auto px-4 py-4">
+        <section className="container mx-auto px-4 py-2">
           <Card className="bg-gradient-to-r from-gray-900 to-green-900 text-white p-6 md:p-8 rounded-lg shadow-xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Beli Banyak Lebih Murah, Kami Melayani Grosir!
@@ -210,23 +209,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({
         />
 
         <Separator className="my-0 bg-gray-200 dark:bg-gray-700" />
-
-        <section className="container mx-auto px-4 py-4">
-          <h2 className="text-xl font-bold text-center mb-8">
-            Lihat Produk Lainnya yang Mungkin Anda Suka
-          </h2>
-          {otherProducts.length === 0 ? (
-            <p className="text-center text-gray-600 dark:text-gray-400 mt-8">
-              Tidak ada produk lain yang tersedia saat ini.
-            </p>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-4">
-              {otherProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          )}
-        </section>
+              <ProductListSection otherProducts={otherProducts} />
       </div>
       <div className="border-t-1 py-2 container px-4 flex mx-auto text-lg  font-bold">
         <Button
