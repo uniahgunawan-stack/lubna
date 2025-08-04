@@ -27,10 +27,10 @@ export default async function HomePage() {
       <section className="relative flex items-center justify-center text-center rounded-b-sm overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black to-green-500 opacity-90"></div>
         <div className="relative z-10 p-4 max-w-4xl mx-auto">
-          <h1 className="text-2xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-tight">
             Temukan Gaya Anda, Belanja Tanpa Batas
           </h1>
-          <p className="text-lg md:text-2xl text-gray-200 mb-4">
+          <p className="text-lg md:text-xl font-semibold text-gray-200 mb-4">
             Koleksi terbaru, kualitas terbaik, harga bersahabat. Hanya di Lubna
             Muslimah Fashion
           </p>

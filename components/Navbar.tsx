@@ -203,16 +203,16 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-950/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto flex items-center justify-between h-16 md:h-32 px-2">
+      <div className="container mx-auto flex items-center justify-between h-16 md:h-28 px-2">
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/lubna-512x512.png"
             alt="logo_toko_kamu"
-            width={40}
-            height={40}
+            width={30}
+            height={30}
             className="w-10 h-10 md:h-20 md:w-20 object-contain"
           />
-          <span className="text-xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 hidden sm:block">
+          <span className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 hidden sm:block">
             Lubna Fashion
           </span>
         </Link>
