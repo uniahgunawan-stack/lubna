@@ -42,7 +42,7 @@ const ReviewCard: React.FC<{ review: Review; fallbackImageUrl: string }> = ({ re
                         <Image
                             key={imgObj.id || idx}
                             src={imgObj.url || fallbackImageUrl}
-                            alt={imgObj.alt || `Review ${idx}`}
+                            alt={`Review image ${idx + 1}`}
                             width={120}
                             height={120}
                             priority
